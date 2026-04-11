@@ -1,0 +1,68 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+.venv/
+env/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/content
+
+node_modules/
+*.log
+*.zip
+*.mp4
+*.pt
+*.pth
+.env
+# Logs
+*.log
+backend.log
+
+# Sensitive local config
+backend/Attendence/
+backend/.env
+backend/.env.*
+*.env
+!.env.example
+
+# Flutter / Dart
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.pub/
+**/.pub-cache/
+/student_mobile/build/
+
+# Electron / Node
+teacher-desktop/node_modules/
+teacher-desktop/dist/
+
+# Android / iOS generated files in student app
+student_mobile/.gradle/
+student_mobile/android/.gradle/
+student_mobile/android/app/*.keystore
+student_mobile/ios/Pods/
+student_mobile/ios/.symlinks/
+student_mobile/ios/Flutter/ephemeral/
+student_mobile/macos/Pods/
+student_mobile/windows/flutter/ephemeral/
+student_mobile/linux/flutter/ephemeral/
+
+# Local launcher / packaged artifacts
+*.AppImage
+*.deb
+*.rpm
+
+# Runtime-generated face exports
+backend/exported_faces/

@@ -1,0 +1,50 @@
+{
+  "name": "teacher-desktop",
+  "productName": "AETTA",
+  "version": "1.0.0",
+  "description": "Teacher projector app for dynamic QR attendance",
+  "homepage": "https://attea.local",
+  "author": {
+    "name": "AETTA",
+    "email": "demo.teacher@example.com"
+  },
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron . --no-sandbox --class=AETTA",
+    "start:sandbox": "electron . --class=AETTA",
+    "pack:linux": "electron-builder --linux --dir",
+    "dist:linux": "electron-builder --linux AppImage deb"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "electron": "^31.3.1",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.attea.teacher",
+    "productName": "AETTA",
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "build/icon.png",
+      "maintainer": "AETTA <demo.teacher@example.com>",
+      "category": "Education",
+      "desktop": {
+        "Name": "AETTA",
+        "StartupWMClass": "AETTA"
+      }
+    }
+  }
+}

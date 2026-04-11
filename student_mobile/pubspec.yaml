@@ -1,0 +1,30 @@
+name: student_mobile
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+  mobile_scanner: ^5.2.1
+  camera: ^0.11.0+2
+  google_mlkit_face_detection: ^0.12.0
+  shared_preferences: ^2.3.2
+  image: ^4.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter:
+  uses-material-design: true
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "../assets/app-icon.jpg"

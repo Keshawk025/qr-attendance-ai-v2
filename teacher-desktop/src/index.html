@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AETTA</title>
+    <link rel="icon" href="../../assets/app-icon.jpg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <aside class="panel">
+        <h1>Attendance Control</h1>
+        <p class="hint">Secure rotating QR with 30-second expiry and live attendance count.</p>
+
+        <form id="loginForm" class="stack">
+          <label>Email</label>
+          <input id="email" type="email" required value="demo.teacher@example.com" />
+          <label>Password</label>
+          <input id="password" type="password" required value="1234" />
+          <button type="submit">Login Teacher</button>
+        </form>
+
+        <section id="sessionControls" class="stack hidden">
+          <label>Subject Code</label>
+          <input id="subjectCode" type="text" required placeholder="21CS501" />
+          <button id="startDynamicQr">Start Dynamic QR</button>
+          <p id="statusText">Idle</p>
+          <p id="countText">Attendance count: 0</p>
+
+          <hr />
+          <h3>Verify Student (USN)</h3>
+          <input id="verifyUsn" type="text" placeholder="1VA23CI051" />
+          <button id="loadLatestPhoto" class="secondary">Load Latest Photo</button>
+          <button id="downloadAttendanceReport" class="secondary">Download Attendance Report</button>
+          <img id="latestPhoto" class="latest-photo hidden" alt="Latest student face" />
+
+          <hr />
+          <h3>Admin Dashboard</h3>
+          <form id="adminLoginForm" class="stack">
+            <input id="adminEmail" type="email" value="demo.teacher@example.com" />
+            <input id="adminPassword" type="password" value="1234" />
+            <button type="submit" class="secondary">Admin Login</button>
+          </form>
+          <section id="adminPanel" class="stack hidden">
+            <button id="adminListDevices" class="secondary">List Device Sessions</button>
+            <button id="adminAuditBtn" class="secondary">View Audit Logs</button>
+            <input id="adminReassignUsn" type="text" placeholder="USN to reassign" />
+            <input id="adminReassignDevice" type="text" placeholder="new-device-id" />
+            <button id="adminReassignBtn" class="secondary">Reassign Device</button>
+            <input id="adminRevokeUsn" type="text" placeholder="USN to revoke device" />
+            <button id="adminRevokeBtn" class="secondary">Revoke Device</button>
+            <button id="adminCleanupBtn" class="secondary">Run Cleanup</button>
+            <pre id="adminOutput" class="admin-output"></pre>
+          </section>
+        </section>
+      </aside>
+
+      <section id="displayPane" class="display hidden">
+        <button id="exitFullscreenBtn" class="exit-fullscreen hidden">Exit Fullscreen</button>
+        <img id="qrImage" class="hidden" alt="Session QR" />
+      </section>
+    </main>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>
