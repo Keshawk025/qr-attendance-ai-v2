@@ -14,6 +14,25 @@ End-to-end QR attendance platform with:
 - **Teacher app:** `AETTA`
 - **Student app:** `ATTEA`
 
+## Setup
+
+### 1. Configure environment variables
+
+Copy the example env file and fill in your own values:
+
+```bash
+cp backend/.env.example backend/.env
+```
+
+`backend/.env`:
+
+```env
+SQLALCHEMY_DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/attendance_db
+DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/attendance_db
+```
+
+The backend loads these via `python-dotenv` / `pydantic-settings` — never commit `.env` (already in `.gitignore`).
+
 ## Recommended Launch Flow
 
 ### One-click teacher launch
@@ -21,12 +40,11 @@ End-to-end QR attendance platform with:
 Use the desktop launcher or the packaged app. This starts the backend and teacher app together.
 
 - Desktop icon: `AETTA`
-- Script: `/home/hp/Attea/attendance-suite/launch_aetta.sh`
+- Script: `./launch_aetta.sh` (run from the repo root)
 
 If you prefer terminal:
 
 ```bash
-cd /home/hp/Attea/attendance-suite
 bash start_teacher_suite.sh
 ```
 
@@ -37,7 +55,7 @@ Path: `teacher-desktop`
 ### Run in development
 
 ```bash
-cd /home/hp/Attea/attendance-suite/teacher-desktop
+cd teacher-desktop
 npm install
 npm start
 ```
@@ -45,7 +63,7 @@ npm start
 ### Build installable Linux packages
 
 ```bash
-cd /home/hp/Attea/attendance-suite/teacher-desktop
+cd teacher-desktop
 npm run dist:linux
 ```
 
@@ -57,7 +75,7 @@ Outputs:
 ### Install on Linux (AppImage)
 
 ```bash
-cd /home/hp/Attea/attendance-suite/teacher-desktop
+cd teacher-desktop
 chmod +x dist/AETTA-1.0.0.AppImage
 ./dist/AETTA-1.0.0.AppImage
 ```
@@ -65,7 +83,7 @@ chmod +x dist/AETTA-1.0.0.AppImage
 ### Install on Linux (.deb)
 
 ```bash
-cd /home/hp/Attea/attendance-suite/teacher-desktop
+cd teacher-desktop
 sudo dpkg -i dist/teacher-desktop_1.0.0_amd64.deb
 sudo apt-get -f install -y
 ```
@@ -83,7 +101,7 @@ sudo apt-get -f install -y
 - Admin login inside the desktop app
 - Device-session viewer for seeing which student is attached to which device
 - Device reassignment for restoring a student to a new phone
-- Device revoke action for clearing a student’s current device binding
+- Device revoke action for clearing a student's current device binding
 - Maintenance cleanup action for expiring inactive sessions and cleaning old exports
 - Audit log viewer for checking login, attendance, and admin activity
 - Automatic backend launch from the desktop app so it behaves like one installed desktop product
@@ -96,18 +114,22 @@ Path: `student_mobile`
 ### Build release APK
 
 ```bash
-cd /home/hp/Attea/attendance-suite/student_mobile
-/home/hp/tools/flutter/bin/flutter pub get
-/home/hp/tools/flutter/bin/flutter build apk --release
+cd student_mobile
+flutter pub get
+flutter build apk --release
 ```
+
+> Requires the Flutter SDK on your `PATH`. See flutter.dev/docs/get-started/install.
 
 ### Install on Android phone
 
 ```bash
-/home/hp/Android/Sdk/platform-tools/adb devices
-/home/hp/Android/Sdk/platform-tools/adb uninstall com.example.student_mobile
-/home/hp/Android/Sdk/platform-tools/adb install /home/hp/Attea/attendance-suite/student_mobile/build/app/outputs/flutter-apk/app-release.apk
+adb devices
+adb uninstall com.example.student_mobile
+adb install student_mobile/build/app/outputs/flutter-apk/app-release.apk
 ```
+
+> Requires Android SDK platform-tools on your `PATH`.
 
 ### Student app features
 
@@ -132,8 +154,6 @@ cd /home/hp/Attea/attendance-suite/student_mobile
 ## Backend Features
 
 Path: `backend`
-
-### Backend features
 
 - FastAPI REST API for teacher, student, and admin workflows
 - PostgreSQL schema for teachers, admins, students, device sessions, QR sessions, attendance, and audit logs
@@ -171,10 +191,12 @@ Path: `backend`
 ### Run manually
 
 ```bash
-cd /home/hp/Attea/attendance-suite/backend
-source /home/hp/Attea/.venv/bin/activate
-SQLALCHEMY_DATABASE_URL='postgresql://postgres:REDACTED@localhost:5432/attendance_db' DATABASE_URL='postgresql://postgres:REDACTED@localhost:5432/attendance_db' python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+cd backend
+source .venv/bin/activate
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
+
+Environment variables are read from `backend/.env` (see Setup above).
 
 ### Health check
 
@@ -184,6 +206,8 @@ curl http://127.0.0.1:8000/health
 
 ## Demo Accounts
 
+> Demo-only credentials for local evaluation. Change these before any real deployment.
+
 ### Teacher
 
 - Email: `demo.teacher@example.com`
@@ -191,14 +215,14 @@ curl http://127.0.0.1:8000/health
 
 ### Admin
 
-- Email: `demo.teacher@example.com`
+- Email: `demo.admin@example.com`
 - Password: `1234`
 
 ### Demo Student USNs
 
-- `1VA23CI051`
-- `1VA23CI052`
-- `1VA23CI053`
+- `DEMO23CI001`
+- `DEMO23CI002`
+- `DEMO23CI003`
 
 ## Security Model
 
@@ -209,6 +233,7 @@ curl http://127.0.0.1:8000/health
 - Role-based access for teacher, student, and admin
 - Rate limiting on login and attendance endpoints
 - Audit logs for auth, attendance, and admin actions
+- Database credentials and secrets loaded from `.env`, never committed
 
 ## Reports and Data
 
@@ -222,15 +247,17 @@ curl http://127.0.0.1:8000/health
 ### Reset database to a clean state
 
 ```bash
-cd /home/hp/Attea/attendance-suite/backend
-SQLALCHEMY_DATABASE_URL='postgresql://postgres:REDACTED@localhost:5432/attendance_db' DATABASE_URL='postgresql://postgres:REDACTED@localhost:5432/attendance_db' /home/hp/Attea/.venv/bin/python reset_db.py
+cd backend
+source .venv/bin/activate
+python reset_db.py
 ```
 
 ### Cleanup exported photos and expired sessions
 
 ```bash
-cd /home/hp/Attea/attendance-suite/backend
-SQLALCHEMY_DATABASE_URL='postgresql://postgres:REDACTED@localhost:5432/attendance_db' DATABASE_URL='postgresql://postgres:REDACTED@localhost:5432/attendance_db' /home/hp/Attea/.venv/bin/python cleanup_runtime.py
+cd backend
+source .venv/bin/activate
+python cleanup_runtime.py
 ```
 
 ## Network Notes
